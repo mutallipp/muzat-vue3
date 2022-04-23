@@ -20,33 +20,24 @@
         {{ title }}
       </text>
     </view>
-    <u-button
-      type="primary"
-      icon="map"
-      text="图标按钮"
-    >
-      sdfsf
-    </u-button>
     <van-button type="primary">
       vant
     </van-button>
-    <van-swipe-cell
-      class="my-swipe"
-      :autoplay="3000"
-      indicator-color="white"
-    >
-      <div>dfsdfsd</div>
-      <div>dfsdfsdsasdf</div>
-    </van-swipe-cell>
   </view>
 </template>
 
 <script lang="ts">
-import { defineComponent, ref } from 'vue'
+import { defineComponent, onMounted, ref } from 'vue'
+import rest from '@/utils/rest'
+import { fetch } from '@/utils/fetch'
 
 export default defineComponent({
   setup () {
     const title = ref('muzat')
+    onMounted(() => {
+      rest.get('http://localhost:8081/api/mina/member/login', { code: 'sdfsfsf' }, { target: 'muzat' })
+      // fetch.post('http://localhost:8081/api/mina/member/login', { code: 'sdfsfsf' })
+    })
     return {
       title,
     }
