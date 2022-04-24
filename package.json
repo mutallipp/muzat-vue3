@@ -84,10 +84,25 @@
     "eslint-plugin-node": "^11.1.0",
     "eslint-plugin-promise": "^5.1.0",
     "eslint-plugin-vue": "^7.18.0",
-    "husky": "^7.0.0",
+    "husky": "^7.0.4",
     "lint-staged": "^10.5.4",
     "sass": "^1.49.11",
     "typescript": "^4.6.3",
     "vite": "^2.9.0"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
+  },
+  "lint-staged": {
+    "app/**/*.tsx": "eslint --fix --ext .tsx",
+    "app/**/*.ts": "eslint --fix --ext .ts",
+    "app/**/*.jsx": "eslint --fix --ext .jsx",
+    "app/**/*.js": "eslint --fix --ext .js",
+    "server/**/*.tsx": "eslint --fix --ext .tsx",
+    "server/**/*.ts": "eslint --fix --ext .ts",
+    "server/**/*.jsx": "eslint --fix --ext .jsx",
+    "server/**/*.js": "eslint --fix --ext .js"
   }
 }
