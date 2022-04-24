@@ -29,7 +29,6 @@
 <script lang="ts">
 import { defineComponent, onMounted, ref } from 'vue'
 import rest from '@/utils/rest'
-import { fetch } from '@/utils/fetch'
 
 export default defineComponent({
   setup () {
@@ -39,8 +38,7 @@ export default defineComponent({
       // fetch.post('http://localhost:8081/api/mina/member/login', { code: 'sdfsfsf' })
     })
     return {
-      title',
-      '',
+      title,
     }
   },
 })

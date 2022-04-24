@@ -23,3 +23,10 @@ export interface IResult<T> {
   msg: string,
   data: T,
 }
+
+/**
+ * 自定义请求函数名字
+ */
+export enum RequestFucNames {
+  REQUEST = 'request'
+}

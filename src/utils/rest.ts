@@ -1,9 +1,9 @@
-import axios, { AxiosInstance, AxiosPromise, AxiosRequestConfig } from 'axios'
+import axios, { AxiosInstance, AxiosPromise } from 'axios'
 import * as utils from '@/utils'
-import store from '@/store'
-import qs from 'qs'
 import { IAnyObj } from '@/defineds'
-import { IRestHeader, IResult, RequestMethod } from '@/defineds/rest'
+import {
+  IRestHeader, IResult, RequestFucNames, RequestMethod,
+} from '@/defineds/rest'
 import buildURL from '../../node_modules/axios/lib/helpers/buildURL'
 import settle from '../../node_modules/axios/lib/core/settle'
 
@@ -29,93 +29,6 @@ class Axios {
   _init (): void {
     // 适配 小程序
     this._axiosCustom.defaults.adapter = this._uniAppRequest.bind(this)
-    this._request()
-    this._response()
-  }
-
-  /**
-   * post 请求
-   * @param url url
-   * @param params 参数
-   * @param config 配置
-   */
-  public get (url: string, params: IAnyObj = {}, config: IAnyObj = {}) {
-    console.log('get请求')
-    return this._axiosCustom.get(url, {
-      params,
-      ...config,
-    })
-  }
-
-  /**
-   * get请求
-   * @param url url
-   * @param params 参数
-   * @param config 配置
-   */
-  public post (url: string, params: IAnyObj = {}, config: IAnyObj = {}) {
-    console.log('post请求')
-    return this._axiosCustom.post(url, {
-      data: params,
-    })
-  }
-
-  /**
-   * 请求发送之前调用
-   */
-  private _request () {
-    this._axiosCustom.interceptors.request.use(config => {
-      console.log('_request', config)
-
-      // 自定义header，可添加项目token
-      // if (store.state.app.token) {
-      //   config.headers.token = store.state.app.token;
-      //   config.headers.timestamp = new Date().getTime();
-      // }
-      return config
-    }, error => {
-      return Promise.reject(error)
-    })
-  }
-
-  /**
-   * 响应
-   */
-  private _response () {
-    // 响应拦截
-    this._axiosCustom.interceptors.response.use(response => {
-      console.log('respone', response)
-
-      const resCode = response.status
-      if (resCode === 200) {
-        console.log('请求成功')
-        return Promise.resolve(response)
-      } else {
-        return Promise.reject(response)
-      }
-    }, error => {
-      console.log('respone error', error.response)
-
-      const resCode = error.response.status
-      switch (resCode) {
-        case 401:
-          console.log('token-0')
-          break
-        case 404:
-          console.log('网络请求不存在')
-          break
-        case 405:
-          console.log('Method Not Allowed')
-          break
-        case 500:
-          console.log('服务器连接错误')
-          break
-        // 其他状态码错误提示
-        default:
-          console.log('接口调用错误')
-      }
-      return Promise.reject(error)
-    })
   }
 
   /**
@@ -125,6 +38,7 @@ class Axios {
     return new Promise((resolve, reject) => {
       uni.request({
         method: config.method as any,
+        // url: buildURL(config.url, config.params, config.paramsSerializer),
         url: buildURL(config.url, config.params, config.paramsSerializer),
         header: config.headers,
         data: config.data,
@@ -156,7 +70,11 @@ class Axios {
   // 设置公共header
   _getHeader<T> (headers: T): T {
     const globalHeaders = {}
-
+    if (!headers['content-type']) {
+      Object.assign(globalHeaders, {
+        'content-type': 'application/json',
+      })
+    }
     // token
     // if (store.state?.user?.infoMember?.token) {
     //   Object.assign(globalHeaders, {
@@ -214,6 +132,206 @@ class Axios {
         return url
       }
     }
+  }
+
+  /**
+   * 核心请求函数，下面所有函数都基于此函数
+   * @param href: string 请求的地址
+   * @param params: object 请求参数，选填，默认: {}
+   * @param config: object axios参数，选填，默认: {}
+   * @param + autoErrorRes: boolean 是否自动处理响应错误，默认: true
+   * @param + autoErrorData: boolean 是否自动处理后台错误，默认: true
+   * @param + autoCancel: boolean 离开路由时是否自动取消当前页面发起的所有请求，默认: true
+   * @returns Promise<any>
+   */
+  request<T> (url: string, params: IAnyObj = {}, config: IAnyObj = {}): Promise<IResult<T>> {
+    if (!this._axiosCustom) {
+      return (Promise.resolve({
+        code: -100,
+        msg: '',
+      })) as Promise<IResult<T>>
+    }
+    const {
+      // autoErrorRes = true,
+      autoErrorData = true,
+      // autoCancel = true,
+      paramsType = 'raw',
+      target = 'from-zeus',
+    } = config
+    if (!url) return Promise.reject(new Error('缺少请求url'))
+    // if (autoCancel) {
+    //   Object(config, {
+    //     cancelToken: store.state[storeConstants.UPDATESOURCE].token,
+    //   })
+    // }
+
+    // if (!config.hideLoading) fullScreenLoading.add()
+
+    const newParams = this._getParams(params, config)
+    const newUrl = this._getUrl(url, target)
+    // RequestMethod
+    const args = {
+      method: RequestMethod.POST as RequestMethod,
+      url: newUrl,
+      ...{
+        ...config,
+        headers: this._getHeader<IRestHeader>(config.headers),
+      },
+    }
+
+    console.log('args.method', args.method)
+
+    // 处理url传参
+    if (args.method.toLowerCase() === 'get' || paramsType === 'form-data') {
+      Object.assign(args, {
+        params: newParams || {},
+      })
+      console.log('args', args)
+    } else if (paramsType === 'raw') {
+      Object.assign(args, {
+        data: newParams || {},
+      })
+    } else {
+      console.warn('paramsType的有效值为form-data|raw')
+    }
+
+    return this._axiosCustom(args).then(async res => {
+      // fullScreenLoading.remove()
+      const { data } = res
+      switch (target) {
+        case 'from-muzat':
+        case 'from-node':
+          // case 'mall': {
+          //   if (data?.code !== 100) {
+          //     switch (data?.code) {
+          //       default: {
+          //         const errMsg = data?.msg || '未知的服务器错误'
+          //         const errCod = data?.code
+          //         console.warn(`请求接口: ${args.url}, 状态码: ${errCod}, 错误消息: ${errMsg}`)
+          //         if (autoErrorRes) {
+          //           utils.toast(errMsg, 'error', {
+          //             duration: 5 * 1000,
+          //           })
+          //         }
+          //       }
+          //     }
+          //   }
+          //   break
+          // }
+      }
+
+      if (config.responseType === 'blob') {
+        return {
+          data: {
+            headers: res.headers,
+            data,
+          },
+        }
+      } else {
+        return data
+      }
+    }, async error => {
+      // 处理请求报错，如状态码为500、404、422等
+      // fullScreenLoading.remove()
+      if (error?.response?.status) {
+        switch (error.response.status) {
+          // 未登录
+          case 401: {
+            // 权限问题
+            break
+          }
+          case 404: {
+            // 资源不存在
+            break
+          }
+          case 500: {
+            // 服务端报错
+            break
+          }
+          default: {
+            // default
+          }
+        }
+      }
+
+      const newError = {
+        originError: error,
+        status: error?.response?.status || -100,
+        data: error?.response?.data || {},
+      }
+
+      console.error(`网络请求异常，请求接口: ${args.url}, 异常状态码: ${newError.status}`)
+      if (autoErrorData) {
+        utils.toast(`网络请求异常, 异常状态码: ${newError.status}`, 'error', {
+          duration: 7000,
+        })
+      }
+      return Promise.reject(newError)
+    })
+  }
+
+  private _get<T> (href: string, params: IAnyObj = {}, config: IAnyObj = {}, outTime = -1, requestMethod:RequestFucNames = RequestFucNames.REQUEST): Promise<IResult<T>> {
+    if (!href) return Promise.reject(new Error('缺少入口'))
+    const newConfig = {
+      headers: config.headers || {},
+      method: 'get',
+      ...config,
+    }
+    if (requestMethod === 'request') {
+      return this[requestMethod](href, params, newConfig)
+    }
+    return this[requestMethod](href, params, newConfig, outTime)
+  }
+
+  private _post<T> (href: string, params: IAnyObj = {}, config: IAnyObj = {}, outTime = -1, requestMethod = 'request'): Promise<IResult<T>> {
+    if (!href) return Promise.reject(new Error('缺少入口'))
+    const newConfig = {
+      headers: config.headers || {},
+      method: 'post',
+      ...config,
+    }
+
+    if (config.uploadFile) {
+      Object.assign(newConfig.headers, {
+        'content-type': 'multipart/form-data',
+      })
+    }
+    // const urlObj = url.parse(href)
+    // const queryObj = qs.parse(urlObj.query as string)
+    // const query = qs.stringify(queryObj)
+    // const newUrl = url.format(Object.assign(urlObj, {
+    //   query,
+    //   search: `?${query}`,
+    // }))
+    if (requestMethod === 'request') {
+      return this[requestMethod](newUrl, params, newConfig)
+    } else if (requestMethod === 'sessionRequest' || requestMethod === 'localRequest') {
+      return this[requestMethod](newUrl, params, newConfig, outTime)
+    } else {
+      throw new Error('查找不到需要调用的函数')
+    }
+  }
+
+  /**
+   * get请求 tips: api接口返回值类型统一命名方式 以I + 命名 + Result命令 ex: IInfoMemberResult
+   * @param href: string 请求的地址
+   * @param params: object 请求参数，选填，默认: {}
+   * @param config: object axios参数，选填，默认: {}
+   * @returns Promise<any>
+   */
+  public async get<T> (href: string, params: IAnyObj = {}, config: IAnyObj = {}, outTime = -1): Promise<IResult<T>> {
+    return this._get(href, params, config, outTime)
+  }
+
+  /**
+   * post请求 tips: api接口返回值类型统一命名方式 以I + 命名 + Result命令 ex: IInfoMemberResult
+   * @param href: string 请求的地址
+   * @param params: object 请求参数，选填，默认: {}
+   * @param config: object axios参数，选填，默认: {}
+   * @returns Promise<any>
+   */
+  async post<T> (href: string, params: IAnyObj = {}, config: IAnyObj = {}, outTime = -1): Promise<IResult<T>> {
+    return this._post(href, params, config, outTime)
   }
 }
 
