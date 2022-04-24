@@ -31,7 +31,8 @@
     "build:quickapp-webview-huawei": "uni build -p quickapp-webview-huawei",
     "build:quickapp-webview-union": "uni build -p quickapp-webview-union",
     "lint": "eslint --ext .ts,tsx,vue src/** --no-error-on-unmatched-pattern --quiet",
-    "lint:fix": "eslint --ext .ts,tsx,vue src/** --no-error-on-unmatched-pattern --fix"
+    "lint:fix": "eslint --ext .ts,tsx,vue src/** --no-error-on-unmatched-pattern --fix",
+    "prepare": "husky install"
   },
   "dependencies": {
     "@dcloudio/uni-app": "3.0.0-alpha-3040320220325006",
