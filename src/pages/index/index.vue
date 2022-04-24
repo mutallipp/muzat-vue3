@@ -39,7 +39,8 @@ export default defineComponent({
       // fetch.post('http://localhost:8081/api/mina/member/login', { code: 'sdfsfsf' })
     })
     return {
-      title,'',
+      title',
+      '',
     }
   },
 })
