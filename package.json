@@ -96,13 +96,10 @@
     }
   },
   "lint-staged": {
-    "app/**/*.tsx": "eslint --fix --ext .tsx",
-    "app/**/*.ts": "eslint --fix --ext .ts",
-    "app/**/*.jsx": "eslint --fix --ext .jsx",
-    "app/**/*.js": "eslint --fix --ext .js",
-    "server/**/*.tsx": "eslint --fix --ext .tsx",
-    "server/**/*.ts": "eslint --fix --ext .ts",
-    "server/**/*.jsx": "eslint --fix --ext .jsx",
-    "server/**/*.js": "eslint --fix --ext .js"
+    "src/**/*.tsx": "eslint --fix --ext .tsx",
+    "src/**/*.ts": "eslint --fix --ext .ts",
+    "src/**/*.jsx": "eslint --fix --ext .jsx",
+    "src/**/*.js": "eslint --fix --ext .js",
+    "src/**/*.vue": "eslint --fix --ext .vue"
   }
 }
