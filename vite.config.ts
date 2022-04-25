@@ -11,6 +11,7 @@ export default defineConfig({
     alias: {
       '@': _resolve('./src'),
       '@assets': _resolve('./src/assets'),
+      '@api': _resolve('./src/api'),
       '@components': _resolve('./src/components'),
       '@defineds': _resolve('./src/defineds'),
       '@directive': _resolve('./src/directive'),

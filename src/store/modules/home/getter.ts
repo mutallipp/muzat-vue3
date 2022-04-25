@@ -1,21 +1,8 @@
 import { IRootState } from '@/store/types'
 import { GetterTree } from 'vuex'
-import { IHomeState } from './types'
-
-/**
- * 首页应用的 getter类型
- */
-export enum HomeGetterType {
-  CATEGORY_LIST = 'CATEGORY_LIST',
-
-}
-
-/**
- * 首页应用的 getters类型
- */
-export type HomeGetters = {
-  [HomeGetterType.CATEGORY_LIST] (state:IHomeState) :any
-}
+import { HomeGetterType } from './constants/getter'
+import { HomeGetters } from './types/getter'
+import { IHomeState } from './types/state'
 
 /**
  * 首页应用的 getters

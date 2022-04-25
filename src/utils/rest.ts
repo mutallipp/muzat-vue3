@@ -179,14 +179,11 @@ class Axios {
       },
     }
 
-    console.log('args.method', args.method)
-
     // 处理url传参
     if (args.method.toLowerCase() === 'get' || paramsType === 'form-data') {
       Object.assign(args, {
         params: newParams || {},
       })
-      console.log('args', args)
     } else if (paramsType === 'raw') {
       Object.assign(args, {
         data: newParams || {},
@@ -304,7 +301,7 @@ class Axios {
     //   search: `?${query}`,
     // }))
     if (requestMethod === 'request') {
-      return this[requestMethod](newUrl, params, newConfig)
+      return this[requestMethod](href, params, newConfig)
     } else if (requestMethod === 'sessionRequest' || requestMethod === 'localRequest') {
       return this[requestMethod](newUrl, params, newConfig, outTime)
     } else {

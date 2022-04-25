@@ -99,6 +99,7 @@ module.exports = {
         map: [
           ['@', './src'],
           ['@assets', './src/assets'],
+          ['@api', './src/api'],
           ['@components', './src/components'],
           ['@defineds', './src/defineds'],
           ['@directives', './src/directives'],

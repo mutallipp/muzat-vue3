@@ -2,6 +2,7 @@ import { createStore } from 'vuex'
 import { App } from 'vue'
 import { homeModule } from './modules/home'
 import { IRootState, Store } from './types'
+import { userModule } from './modules/user'
 
 /**
  * 全局仓库
@@ -9,6 +10,7 @@ import { IRootState, Store } from './types'
 const store = createStore<IRootState>({
   modules: {
     home: homeModule,
+    user: userModule,
   },
 })
 
@@ -16,7 +18,7 @@ const store = createStore<IRootState>({
  * 获取全局仓库
  */
 export function useStore ():Store {
-  return store as Store
+  return store
 }
 
 /**

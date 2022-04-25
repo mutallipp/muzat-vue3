@@ -1,4 +1,4 @@
-import { IHomeState } from './types'
+import { IHomeState } from './types/state'
 
 /**
  * 首页相关应用状态

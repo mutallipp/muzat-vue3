@@ -1,22 +1,8 @@
 import { MutationTree } from 'vuex'
-import { IHomeState } from './types'
+import { HomeMutationTypes } from './constants/mutations'
+import { HomeMutations } from './types/mutations'
+import { IHomeState } from './types/state'
 
-/**
- * commit类型
- */
-export enum HomeMutationTypes {
-  GET_HOME_DATA = 'GET_HOME_DATA',
-  CHANGE_HOME_PAGE_DATA_LOAD = 'CHANGE_HOME_PAGE_DATA_LOAD',
-  CHANGE_PRODUCT_CATEGORY_LIST = 'CHANGE_PRODUCT_CATEGORY_LIST',
-  GET_PRODUCT_LIST = 'GET_PRODUCT_LIST',
-  SET_PRODUCT_LIST = 'SET_PRODUCT_LIST',
-}
-/**
- * 首页 mutations类型
- */
-export type HomeMutations<S = IHomeState> ={
-  [HomeMutationTypes.GET_HOME_DATA] (state:S, homeData:any):void
-}
 /**
  * 首页应用的 mutations
  */
