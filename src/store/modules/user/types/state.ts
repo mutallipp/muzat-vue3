@@ -5,5 +5,9 @@ export interface IUserState {
   /**
   * 用户token
   */
-  token:string
+  token:string,
+  /**
+   * dataPromise
+   */
+  dataPromise?:Promise<any>
 }

@@ -4,6 +4,8 @@ import { IAnyObj } from '@/defineds'
 import {
   IRestHeader, IResult, RequestFucNames, RequestMethod,
 } from '@/defineds/rest'
+import { RootStore } from '@/store/types'
+import store from '@store/index'
 import buildURL from '../../node_modules/axios/lib/helpers/buildURL'
 import settle from '../../node_modules/axios/lib/core/settle'
 
@@ -16,6 +18,11 @@ class Axios {
    */
   _axiosCustom: AxiosInstance
 
+  /**
+   * 仓库
+   */
+  store: RootStore
+
   constructor () {
     // axios实例
     this._axiosCustom = axios.create({
@@ -23,6 +30,7 @@ class Axios {
       timeout: (2 * 60 * 1000),
     })
     this._init()
+    this.store = store
   }
 
   // 初始化模块
@@ -76,11 +84,11 @@ class Axios {
       })
     }
     // token
-    // if (store.state?.user?.infoMember?.token) {
-    //   Object.assign(globalHeaders, {
-    //     token: store.state.user.infoMember.token,
-    //   })
-    // }
+    if (this.store?.state?.user?.token) {
+      Object.assign(globalHeaders, {
+        token: this.store.state.user.token,
+      })
+    }
     return Object.assign(globalHeaders, headers)
   }
 
@@ -116,14 +124,14 @@ class Axios {
    * @param url 计算url
    * @returns url
    */
-  _getUrl (url: string, target = 'from-zeus'): string {
+  _getUrl (url: string, target = 'from-muzat'): string {
     if (/https?:/.test(url)) return url
     switch (target) {
       case 'apptest': {
         return `${import.meta.env.VITE_APP_testApi}${url}`
       }
-      case 'muzat': {
-        return `${import.meta.env.VITE_APP_Muzat}${url}`
+      case 'from-muzat': {
+        return `${import.meta.env.VITE_APP_MUZAT_API}${url}`
       }
       case 'from-node': {
         return url
@@ -156,7 +164,7 @@ class Axios {
       autoErrorData = true,
       // autoCancel = true,
       paramsType = 'raw',
-      target = 'from-zeus',
+      target = 'from-muzat',
     } = config
     if (!url) return Promise.reject(new Error('缺少请求url'))
     // if (autoCancel) {
@@ -191,10 +199,12 @@ class Axios {
     } else {
       console.warn('paramsType的有效值为form-data|raw')
     }
-
+    console.log(args)
     return this._axiosCustom(args).then(async res => {
       // fullScreenLoading.remove()
       const { data } = res
+      console.log('请求成功', res)
+
       switch (target) {
         case 'from-muzat':
         case 'from-node':

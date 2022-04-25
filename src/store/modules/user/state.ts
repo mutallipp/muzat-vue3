@@ -5,4 +5,5 @@ import { IUserState } from './types/state'
  */
 export const userState: IUserState = {
   token: '',
+  dataPromise: undefined,
 }

@@ -6,4 +6,5 @@ import { IUserState } from './state'
  */
 export type UserMutations<S = IUserState> ={
   [UserMutationTypes.SET_TOKEN] (state:S, token:string):void
+  [UserMutationTypes.SET_DATA_PROMISE] (state:S, dataPromise:Promise<any>):void
 }

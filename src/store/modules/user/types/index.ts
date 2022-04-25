@@ -7,7 +7,7 @@ import { IUserState } from './state'
 /**
  * 用户应用的 仓库
  */
-export type HomeStore <S = IUserState> = Omit<Store<S>, 'getters'|'commit'|'dispatch'> & {
+export type UserStore <S = IUserState> = Omit<Store<S>, 'getters'|'commit'|'dispatch'> & {
   commit<K extends keyof UserMutations, P extends Parameters<UserMutations[K]>[1]>(
     key:K,
     payload?:P

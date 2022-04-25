@@ -1,7 +1,7 @@
 import { createStore } from 'vuex'
 import { App } from 'vue'
 import { homeModule } from './modules/home'
-import { IRootState, Store } from './types'
+import { IRootState, RootStore } from './types'
 import { userModule } from './modules/user'
 
 /**
@@ -17,7 +17,7 @@ const store = createStore<IRootState>({
 /**
  * 获取全局仓库
  */
-export function useStore ():Store {
+export function useStore ():RootStore {
   return store
 }
 

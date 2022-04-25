@@ -1,12 +1,14 @@
 <script setup lang="ts">
 import { onLaunch, onShow, onHide } from '@dcloudio/uni-app'
-// import { useStore } from '@store/index'
+import { useStore } from '@store/index'
 import { ref } from 'vue'
+import { UserActionTypes } from './store/modules/user/constants/action'
 
 const title = ref('')
-onLaunch(() => {
-  // const store = useStore()
-  // console.log('store:', store)
+onLaunch(async () => {
+  const store = useStore()
+  console.log('store:', store)
+  store.dispatch(UserActionTypes.LOGIN)
 
   console.log('App Launch')
 })

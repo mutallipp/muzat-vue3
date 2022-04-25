@@ -1,7 +1,7 @@
 import { IResult } from '@/defineds/rest'
 import rest from '@utils/rest'
 import { ILoginCodeResult, ILoginResult } from './types'
-import LoginType from './uri'
+import LoginUri from './uri'
 
 /**
  * 获取code
@@ -20,6 +20,7 @@ export const getLoginCodeApi = ():Promise<IResult<ILoginCodeResult>> => {
       provider: 'weixin',
       success (res:any) {
         resultData.data.code = res.code
+        resultData.code = 100
         resolve(resultData)
       },
       fail (err:any) {
@@ -35,7 +36,8 @@ export const getLoginCodeApi = ():Promise<IResult<ILoginCodeResult>> => {
  * 登录
  */
 export const loginApi = async ():Promise<IResult<ILoginResult>> => {
+  // 获取 code
   const { code, data, msg } = await getLoginCodeApi()
   if (code !== 100) return Promise.resolve({ code: -100, data: { token: '' }, msg })
-  return rest.post(LoginType.USER_LOGIN, { code: data.code })
+  return rest.post(LoginUri.USER_LOGIN, { code: data.code })
 }

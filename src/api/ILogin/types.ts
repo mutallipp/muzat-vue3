@@ -8,5 +8,6 @@ export interface ILoginCodeResult{
  * 登录返回类型
  */
 export interface ILoginResult {
-  token:string
+  token:string,
+  tokenHead?:string
 }

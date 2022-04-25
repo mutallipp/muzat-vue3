@@ -27,17 +27,18 @@
 </template>
 
 <script lang="ts">
+import store from '@/store'
 import { defineComponent, onMounted, ref } from 'vue'
-import rest from '@/utils/rest'
-import config from '@/config'
+// import rest from '@/utils/rest'
 
 export default defineComponent({
   setup () {
     const title = ref('muzat')
     onMounted(() => {
-      rest.get('http://localhost:8081/api/mina/member/login', { code: 'sdfsfsf' }, { target: 'muzat' })
-      console.log('config', config)
-
+      store.state.user.dataPromise?.then(() => {
+        console.log('index promise')
+      })
+      // rest.get('http://localhost:8081/api/mina/member/login', { code: 'sdfsfsf' }, { target: 'muzat' })
       // fetch.post('http://localhost:8081/api/mina/member/login', { code: 'sdfsfsf' })
     })
     return {

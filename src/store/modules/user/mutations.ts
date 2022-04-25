@@ -13,4 +13,10 @@ export const userMutations:MutationTree<IUserState> &UserMutations = {
     }
     Object.assign(state, newState)
   },
+  [UserMutationTypes.SET_DATA_PROMISE] (state:IUserState, dataPromise:Promise<any>) {
+    const newState = {
+      dataPromise,
+    }
+    Object.assign(state, newState)
+  },
 }
