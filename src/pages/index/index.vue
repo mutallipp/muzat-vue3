@@ -29,12 +29,15 @@
 <script lang="ts">
 import { defineComponent, onMounted, ref } from 'vue'
 import rest from '@/utils/rest'
+import config from '@/config'
 
 export default defineComponent({
   setup () {
     const title = ref('muzat')
     onMounted(() => {
       rest.get('http://localhost:8081/api/mina/member/login', { code: 'sdfsfsf' }, { target: 'muzat' })
+      console.log('config', config)
+
       // fetch.post('http://localhost:8081/api/mina/member/login', { code: 'sdfsfsf' })
     })
     return {

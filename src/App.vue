@@ -1,12 +1,12 @@
 <script setup lang="ts">
 import { onLaunch, onShow, onHide } from '@dcloudio/uni-app'
-import { useStore } from '@store/index'
+// import { useStore } from '@store/index'
 import { ref } from 'vue'
 
 const title = ref('')
 onLaunch(() => {
-  const store = useStore()
-  console.log('store:', store)
+  // const store = useStore()
+  // console.log('store:', store)
 
   console.log('App Launch')
 })

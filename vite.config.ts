@@ -6,8 +6,7 @@ const _resolve = (targetDiv: string) => {
   return resolve(__dirname, targetDiv)
 }
 export default defineConfig({
-  plugins: [uni(),
-  ],
+  plugins: [uni()],
   resolve: {
     alias: {
       '@': _resolve('./src'),
