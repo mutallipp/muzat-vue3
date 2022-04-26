@@ -1,25 +1,21 @@
 <template>
   <div>
-    <div>{{ name }}</div>
+    <div>tabbar</div>
   </div>
 </template>
 
 <script lang="ts">
-import { defineComponent, ref } from 'vue'
+import { defineComponent } from 'vue'
 
-function useTest () {
-  const name = ref('tenst')
-  return {
-    name,
-  }
+function useTabBar () {
+  return {}
 }
 export default defineComponent({
-  name: 'test',
   components: {},
   props: {},
   setup () {
     return {
-      ...useTest(),
+      ...useTabBar(),
     }
   },
 })

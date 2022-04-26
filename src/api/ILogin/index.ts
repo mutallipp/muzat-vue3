@@ -1,4 +1,4 @@
-import { IResult } from '@/defineds/rest'
+import { IResult } from '@/defineds/utils/rest'
 import rest from '@utils/rest'
 import { ILoginCodeResult, ILoginResult } from './types'
 import LoginUri from './uri'

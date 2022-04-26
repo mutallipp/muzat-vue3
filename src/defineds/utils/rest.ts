@@ -30,3 +30,9 @@ export interface IResult<T> {
 export enum RequestFucNames {
   REQUEST = 'request'
 }
+// 分页数据
+export interface IPagination<T> {
+  list: T,
+  pageSize: number,
+  totalCount: number,
+}

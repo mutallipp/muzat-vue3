@@ -12,6 +12,7 @@ export default defineConfig({
       '@': _resolve('./src'),
       '@assets': _resolve('./src/assets'),
       '@api': _resolve('./src/api'),
+      '@layout': _resolve('./src/layout'),
       '@components': _resolve('./src/components'),
       '@defineds': _resolve('./src/defineds'),
       '@directive': _resolve('./src/directive'),

@@ -1,48 +1,51 @@
 <template>
-  <van-nav-bar
-    title="标题"
-    left-text="返回"
-    left-arrow
-  >
-    <template #right>
-      <van-icon
-        name="search"
+  <Layout>
+    <view class="content">
+      <image
+        class="logo"
+        src="/static/logo.png"
       />
-    </template>
-  </van-nav-bar>
-  <view class="content">
-    <image
-      class="logo"
-      src="/static/logo.png"
-    />
-    <view class="text-area">
-      <text class="title">
-        {{ title }}
-      </text>
+      <view class="text-area">
+        <text class="title">
+          {{ title }}
+        </text>
+      </view>
+      <van-button
+        type="primary"
+        @click="btnClickHandle"
+      >
+        vant
+      </van-button>
     </view>
-    <van-button type="primary">
-      vant
-    </van-button>
-  </view>
+  </Layout>
 </template>
 
 <script lang="ts">
 import store from '@/store'
 import { defineComponent, onMounted, ref } from 'vue'
+import Layout from '@layout/index.vue'
 // import rest from '@/utils/rest'
 
 export default defineComponent({
+  components: {
+    Layout,
+  },
   setup () {
     const title = ref('muzat')
+    const btnClickHandle = () => {
+      uni.navigateTo({
+        url: '/pages/test/test',
+      })
+    }
     onMounted(() => {
       store.state.user.dataPromise?.then(() => {
         console.log('index promise')
       })
-      // rest.get('http://localhost:8081/api/mina/member/login', { code: 'sdfsfsf' }, { target: 'muzat' })
-      // fetch.post('http://localhost:8081/api/mina/member/login', { code: 'sdfsfsf' })
     })
     return {
       title,
+
+      btnClickHandle,
     }
   },
 })

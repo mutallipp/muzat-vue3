@@ -3,7 +3,7 @@ import * as utils from '@/utils'
 import { IAnyObj } from '@/defineds'
 import {
   IRestHeader, IResult, RequestFucNames, RequestMethod,
-} from '@/defineds/rest'
+} from '@/defineds/utils/rest'
 import { RootStore } from '@/store/types'
 import store from '@store/index'
 import buildURL from '../../node_modules/axios/lib/helpers/buildURL'

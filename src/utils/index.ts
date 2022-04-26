@@ -1,4 +1,5 @@
-import { FilterNullable, IAnyObj } from '@/defineds'
+import { IAnyObj } from '@/defineds'
+import { ActualTypeElementType, FilterNullable, StringToType } from '@/defineds/utils'
 
 /**
  * 获取元素大概类型(时间、正则等对象视为object类型)
@@ -64,6 +65,18 @@ export function getElementActualType (element: any): string {
   return elementType
 }
 /**
+/**
+ * 判断元素的真实类型与传入的值是否相等
+ * 该函数相较于getElementActualType增加了类型保护
+ * 用法: if (actualTypeIsEqual(time, 'date')) { console.log('time是Date类型') }
+ * @param {element} element
+ * @param type 要判断的类型
+ * @returns boolean
+ */
+export function actualTypeIsEqual<T extends ActualTypeElementType> (element:any, type:T):element is StringToType<T> {
+  return getElementActualType(element) === type
+}
+/**
  * 过滤对象的空值
  * @param {Object}
  * @return {Object}
@@ -89,4 +102,40 @@ export const toast = (
   option: IAnyObj = {},
 ):void => {
   console.log(msg, type, option)
+}
+/**
+ * 睡眠函数
+ * @param wait 睡眠时间
+ */
+export function sleep (wait:500):Promise<void> {
+  return new Promise(resolve => setTimeout(resolve, wait))
+}
+
+/**
+ * 防抖
+ */
+export function debounce<T extends (...args: any) => any>(fun: T, wait = 500, immediately = true): T | ((...args: Parameters<T>) => void) {
+  let timer: NodeJS.Timeout | null = null
+  return function (...rest: any[]) {
+    if (timer) {
+      // console.log(`函数${fun.name}处于防抖时间中，${wait}ms后可再次执行`)
+      clearTimeout(timer)
+    }
+
+    if (immediately) {
+      // 立即执行版本
+      if (!timer) {
+        fun.apply(this, rest)
+      }
+      timer = setTimeout(() => {
+        timer = null
+      }, wait)
+    } else {
+      // 非立即执行版本
+      timer = setTimeout(() => {
+        fun.apply(this, rest)
+        timer = null
+      }, wait)
+    }
+  }
 }

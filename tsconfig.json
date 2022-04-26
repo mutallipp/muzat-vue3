@@ -20,6 +20,7 @@
       "@/*": ["./src/*"],
       "@assets/*": ["./src/assets/*"],
       "@api/*": ["./src/api/*"],
+      "@layout/*": ["./src/layout/*"],
       "@components/*": ["./src/components/*"],
       "@defineds/*": ["./src/defineds/*"],
       "@directive/*": ["./src/directive/*"],
