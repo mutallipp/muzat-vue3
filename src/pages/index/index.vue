@@ -21,31 +21,39 @@
 </template>
 
 <script lang="ts">
-import store from '@/store'
 import { defineComponent, onMounted, ref } from 'vue'
+import store from '@/store'
+import { RegTypes } from '@utils/constants/validate'
+import { validateReg } from '@utils/validate'
 import Layout from '@layout/index.vue'
-// import rest from '@/utils/rest'
+
+function useHomePage () {
+  console.log(validateReg('sdg', RegTypes.IS_NUMBER))
+
+  const title = ref('muzat')
+  const btnClickHandle = () => {
+    uni.navigateTo({
+      url: '/pages/test/test',
+    })
+  }
+  onMounted(() => {
+    store.state.user.dataPromise?.then(() => {
+      console.log('index promise')
+    })
+  })
+  return {
+    title,
+    btnClickHandle,
+  }
+}
 
 export default defineComponent({
   components: {
     Layout,
   },
   setup () {
-    const title = ref('muzat')
-    const btnClickHandle = () => {
-      uni.navigateTo({
-        url: '/pages/test/test',
-      })
-    }
-    onMounted(() => {
-      store.state.user.dataPromise?.then(() => {
-        console.log('index promise')
-      })
-    })
     return {
-      title,
-
-      btnClickHandle,
+      ...useHomePage(),
     }
   },
 })

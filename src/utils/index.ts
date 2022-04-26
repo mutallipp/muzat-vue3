@@ -1,3 +1,4 @@
+import qs from 'qs'
 import { IAnyObj } from '@/defineds'
 import { ActualTypeElementType, FilterNullable, StringToType } from '@/defineds/utils'
 
@@ -116,6 +117,7 @@ export function sleep (wait:500):Promise<void> {
  */
 export function debounce<T extends (...args: any) => any>(fun: T, wait = 500, immediately = true): T | ((...args: Parameters<T>) => void) {
   let timer: NodeJS.Timeout | null = null
+  // eslint-disable-next-line func-names
   return function (...rest: any[]) {
     if (timer) {
       // console.log(`函数${fun.name}处于防抖时间中，${wait}ms后可再次执行`)
@@ -138,4 +140,91 @@ export function debounce<T extends (...args: any) => any>(fun: T, wait = 500, im
       }, wait)
     }
   }
+}
+/**
+ * 截流
+ */
+export function throttle<T extends (...arg:any)=> any>(fun:T, wait:500):T|((...arg:Parameters<T>)=>void) {
+  let timer = 0
+  // eslint-disable-next-line func-names
+  return function (...rest:any[]) {
+    let result
+    const now = (new Date()).valueOf()
+    const diff = now - timer
+    if (diff > wait) {
+      result = fun.apply(this, rest)
+      timer = now
+    } else {
+      console.log(`函数${fun.name}处于节流时间中，${wait - diff}ms后可再次执行`)
+    }
+    return result
+  }
+}
+/**
+ * 获取uuid
+ */
+export function getUUID ():string {
+  return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, c => {
+    const r = Math.floor(Math.random() * 16)
+    const v = c === 'x' ? r : (r && 0x3) || 0x8
+    return v.toString(16)
+  })
+}
+/**
+ * 根据search计算query
+ */
+export function getQuery (search:string):IAnyObj {
+  if ((search || '').startsWith('?')) {
+    const queryObj = qs.parse(search.slice(1, search.length))
+    return queryObj
+  } else {
+    return {}
+  }
+}
+/** px转换vw
+ * @param {number} px
+ * @param {number} designWidth
+ * @return {stirng}
+ */
+export function pxTovw (px:number|string, designWidth = 375): string {
+  const numPx = Number(px)
+  if (!px || Number.isNaN(numPx)) return '0'
+  return `${Number(px) / designWidth * 100}vw`
+}
+
+/**
+ * @param str 输入的字符串，返回当前字符串的长度
+ * @returns
+ */
+export function sizeOf (str: string) {
+  let code: number
+  let len = 0
+  for (let i = 0; i < str.length; i++) {
+    code = str.charCodeAt(i)
+    if (code === 10) {
+      // 回车换行问题
+      len += 2
+    } else if (code < 0x007f) {
+      len += 1
+    } else if (code >= 0x0080 && code <= 0x07ff) {
+      len += 2
+    } else if (code >= 0x0800 && code <= 0xffff) {
+      len += 3
+    }
+  }
+  return len
+}
+/**
+ * 立即执行的callback异步函数转promise异步函数
+ */
+export function immediatelyPromisify<T extends (...args: any) => any>(fun: T, newThis: any, ...rest: any[]): Promise<any> {
+  return new Promise((resolve, reject) => {
+    fun.apply(newThis, [...rest, (err:any, res:any) => {
+      if (err) {
+        reject(err)
+      } else {
+        resolve(res)
+      }
+    }])
+  })
 }
