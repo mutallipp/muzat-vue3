@@ -14,6 +14,9 @@ export const useSharePage = (option:ISharePageProps = {}) => {
     content: '木扎提Muzat信息平台',
   }
   Object.assign(shareOption, option)
+  /**
+   * 分享朋友圈 钩子函数
+   */
   onShareTimeline(() => {
     return {
       title: shareOption.title,
@@ -34,6 +37,9 @@ export const useSharePage = (option:ISharePageProps = {}) => {
       },
     }
   })
+  /**
+   * 分享朋友和群 钩子函数
+   */
   onShareAppMessage(() => {
     return {
       title: shareOption.title,
