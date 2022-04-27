@@ -31,5 +31,14 @@ export interface ISettingState {
   /**
    * 底部导航栏
    */
-  tabBarList: Array<ITabBarItem>,
+  tabBarOption:{
+    /**
+     * tabbarlis
+     */
+    tabBarList: Array<ITabBarItem>,
+    /**
+     * 激活选项index
+     */
+    active:number
+  }
 }

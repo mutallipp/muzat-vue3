@@ -12,7 +12,7 @@ export const settingActions:ActionTree<ISettingState, IRootState> & SettingActio
   /**
    *  用户登录
    */
-  async [SettingActionTypes.LOGIN] ({ commit }) {
-    commit(SettingMutationTypes.SET_TOKEN)
+  async [SettingActionTypes.SET_ACTIVE_TAB_BAR] ({ commit }, index) {
+    commit(SettingMutationTypes.SET_ACTIVE_TAB_BAR, index)
   },
 }

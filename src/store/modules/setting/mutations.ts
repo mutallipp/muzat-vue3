@@ -7,11 +7,11 @@ import { ISettingState } from './types/state'
  * 用户 mutations
  */
 export const settingMutations:MutationTree<ISettingState> &SettingMutations = {
-  [SettingMutationTypes.SET_TOKEN] (state:ISettingState, token:string) {
+  [SettingMutationTypes.SET_ACTIVE_TAB_BAR] (state:ISettingState, index:number) {
     const newState = {
-      token,
+      active: index,
     }
-    Object.assign(state, newState)
+    Object.assign(state.tabBarOption, newState)
   },
   [SettingMutationTypes.SET_DATA_PROMISE] (state:ISettingState) {
     const newState = {

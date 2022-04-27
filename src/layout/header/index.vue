@@ -8,7 +8,7 @@
       </template>
       <template #title>
         <div class="nav-bar-title">
-          muzat信息平台
+          {{ navigationBarTitleText }}
         </div>
       </template>
       <template #right>
@@ -35,7 +35,12 @@ function useHeader () {
 }
 export default defineComponent({
   components: {},
-  props: {},
+  props: {
+    navigationBarTitleText: {
+      type: String,
+      default: 'muzat信息平台',
+    },
+  },
   setup () {
     return {
       ...useHeader(),

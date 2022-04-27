@@ -4,62 +4,52 @@
       :active="active"
       @change="onChange"
     >
-      <!-- <van-tabbar-item info="3">
-        <image
-          slot="icon"
-          src="{{ icon.normal }}"
-          mode="aspectFit"
-          style="width: 30px; height: 18px;"
-        />
-        <image
-          slot="icon-active"
-          src="{{ icon.active }}"
-          mode="aspectFit"
-          style="width: 30px; height: 18px;"
-        />
-        自定义
-      </van-tabbar-item> -->
-      <van-tabbar-item>
+      <van-tabbar-item
+        v-for="tabBarItem in tabBarList"
+        :key="tabBarItem.pagePath"
+      >
+        <!-- 位激活状态 -->
         <template #icon>
-          <van-icon name="wap-home-o" />
+          <van-icon :name="tabBarItem.icon" />
         </template>
+        <!-- 激活状态 -->
         <template #icon-active>
           <van-icon
             :color="baseColor"
-            name="wap-home-o"
+            :name="tabBarItem.icon"
             size="30px"
           />
         </template>
-        <div>首页</div>
-      </van-tabbar-item>
-      <van-tabbar-item icon="search">
-        标签
-      </van-tabbar-item>
-      <van-tabbar-item icon="setting-o">
-        标签
+        <div>{{ tabBarItem.text }}</div>
       </van-tabbar-item>
     </van-tabbar>
   </div>
 </template>
 
 <script lang="ts">
-import { computed, defineComponent, ref } from 'vue'
+import { computed, defineComponent } from 'vue'
 import { useStore } from '@store/index'
 import { SettingGetterType } from '@store/modules/setting/constants/getter'
+import { SettingActionTypes } from '@/store/modules/setting/constants/action'
 
 function useTabBar () {
   const store = useStore()
 
-  const active = ref(0)
-
   const baseColor = computed(() => store.getters[SettingGetterType.BASE_COLOR])
+  const tabBarList = computed(() => store.getters[SettingGetterType.TAB_BAR_LIST])
+  const active = computed(() => store.getters[SettingGetterType.ACTIVE_TAB_BAR])
 
-  const onChange = (event:any) => {
-    active.value = event.detail
+  const onChange = (e:any) => {
+    const { detail } = e
+    store.dispatch(SettingActionTypes.SET_ACTIVE_TAB_BAR, detail)
+    uni.switchTab({
+      url: tabBarList.value[detail].pagePath,
+    })
   }
   return {
     active,
     baseColor,
+    tabBarList,
 
     onChange,
   }

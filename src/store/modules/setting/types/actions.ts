@@ -15,5 +15,5 @@ export type ActionAugments = Omit<ActionContext<ISettingState, IRootState>, 'com
  * 设置应用的 actions类型
  */
 export type SettingActions = {
-  [SettingActionTypes.LOGIN] (context:ActionAugments) :void
+  [SettingActionTypes.SET_ACTIVE_TAB_BAR] (context:ActionAugments, index:number) :void
 }

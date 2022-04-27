@@ -3,9 +3,9 @@
  */
 export enum SettingMutationTypes {
   /**
-   * 设置token
+   * 设置激活的tabbar index
    */
-  SET_TOKEN = 'SET_TOKEN',
+  SET_ACTIVE_TAB_BAR = 'SET_ACTIVE_TAB_BAR',
   /**
    * 设置promise
    */

@@ -3,7 +3,7 @@
  */
 export enum SettingActionTypes {
   /**
-   * 用户登录
+   * 设置激活的tabbar index
    */
-  LOGIN ='LOGIN',
+  SET_ACTIVE_TAB_BAR ='SET_ACTIVE_TAB_BAR',
 }
