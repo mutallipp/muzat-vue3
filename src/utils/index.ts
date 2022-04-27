@@ -92,17 +92,21 @@ export function pick (obj: FilterNullable<IAnyObj> = {}) {
   }
   return newParams
 }
-type toastType = '' | 'success' | 'warning' | 'info' | 'error'
+type toastType = 'error' | 'success' | 'loading' | 'none'
 
 /**
  * toast提示框
  */
 export const toast = (
   msg: string,
-  type: toastType = 'success',
+  type: toastType = 'none',
   option: IAnyObj = {},
 ):void => {
   console.log(msg, type, option)
+  uni.showToast({
+    title: msg,
+    icon: type,
+  })
 }
 /**
  * 睡眠函数
@@ -174,7 +178,7 @@ export function getUUID ():string {
  * 根据search计算query
  */
 export function getQuery (search:string):IAnyObj {
-  if ((search || '').startsWith('?')) {
+  if ((search || '')?.startsWith('?')) {
     const queryObj = qs.parse(search.slice(1, search.length))
     return queryObj
   } else {

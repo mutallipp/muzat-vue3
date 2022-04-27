@@ -13,6 +13,7 @@ export default defineConfig({
       '@assets': _resolve('./src/assets'),
       '@api': _resolve('./src/api'),
       '@layout': _resolve('./src/layout'),
+      '@hooks': _resolve('./src/hooks'),
       '@components': _resolve('./src/components'),
       '@defineds': _resolve('./src/defineds'),
       '@directive': _resolve('./src/directive'),

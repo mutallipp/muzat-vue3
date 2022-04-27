@@ -23,14 +23,18 @@
 <script lang="ts">
 import { defineComponent, onMounted, ref } from 'vue'
 import store from '@/store'
+import { useSharePage } from '@hooks/share'
 
 function useHomePage () {
+  const { onShareAppMessage, onShareTimeline } = useSharePage()
+
   const title = ref('muzat')
   const btnClickHandle = () => {
     uni.navigateTo({
       url: '/pages/test/test',
     })
   }
+
   onMounted(() => {
     store.state.user.dataPromise?.then(() => {
       console.log('index promise')
@@ -38,6 +42,9 @@ function useHomePage () {
   })
   return {
     title,
+
+    onShareAppMessage,
+    onShareTimeline,
     btnClickHandle,
   }
 }
@@ -47,6 +54,7 @@ export default defineComponent({
   setup () {
     return {
       ...useHomePage(),
+
     }
   },
 })

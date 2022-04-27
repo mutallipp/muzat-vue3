@@ -101,6 +101,7 @@ module.exports = {
           ['@assets', './src/assets'],
           ['@api', './src/api'],
           ['@layout', './src/layout'],
+          ['@hooks', './src/hooks'],
           ['@components', './src/components'],
           ['@defineds', './src/defineds'],
           ['@directives', './src/directives'],
