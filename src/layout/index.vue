@@ -21,6 +21,7 @@ function useLayout () {
   return {}
 }
 export default defineComponent({
+  name: 'Layout',
   components: {
     'm-header': Header,
     'm-footer': Footer,

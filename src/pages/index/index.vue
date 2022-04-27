@@ -1,5 +1,5 @@
 <template>
-  <Layout>
+  <m-layout>
     <view class="content">
       <image
         class="logo"
@@ -17,19 +17,14 @@
         vant
       </van-button>
     </view>
-  </Layout>
+  </m-layout>
 </template>
 
 <script lang="ts">
 import { defineComponent, onMounted, ref } from 'vue'
 import store from '@/store'
-import { RegTypes } from '@utils/constants/validate'
-import { validateReg } from '@utils/validate'
-import Layout from '@layout/index.vue'
 
 function useHomePage () {
-  console.log(validateReg('sdg', RegTypes.IS_NUMBER))
-
   const title = ref('muzat')
   const btnClickHandle = () => {
     uni.navigateTo({
@@ -48,9 +43,7 @@ function useHomePage () {
 }
 
 export default defineComponent({
-  components: {
-    Layout,
-  },
+  components: {},
   setup () {
     return {
       ...useHomePage(),
